@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Rock, Paper, Scissors Game</title>
+    <style>
+        /* Styling for the HTML elements */
+        #result {
+            font-size: 24px;
+            margin-top: 20px;
+        }
+
+        table {
+            width: 50%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>Rock, Paper, Scissors Game</h1>
+    <p>Choose your move:</p>
+    <button id="rock">Rock</button>
+    <button id="paper">Paper</button>
+    <button id="scissors">Scissors</button>
+    <div id="result"></div>
+    <div id="score">Score: <span id="points">0</span></div>
+    <div id="timer">Time Left: <span id="time">5</span> seconds</div>
+    <button id="start">Start</button>
+    <button id="reset">Reset</button>
+    <button id="pause">Pause</button>
+    <table>
+        <thead>
+            <tr>
+                <th>Round</th>
+                <th>Your Choice</th>
+                <th>Computer's Choice</th>
+                <th>Result</th>
+                <th>Round Score</th>
+                <th>Computer's Score</th>
+            </tr>
+        </thead>
+        <tbody id="scoreTable">
+        </tbody>
+    </table>
+
+    <script>
+        // Initialize variables for game state
+        let points = 0;               // Player's total score
+        let computerPoints = 0;      // Computer's total score
+        let round = 1;                // Current round number
+        let totalScore = 0;          // Player's total score across rounds
+        let timerInterval;           // Interval for the timer
+        let countdownStarted = false; // Flag to check if countdown is active
+        let canPlay = true;          // Flag to control player moves
+        let timeLeft = 5;            // Initial time for the timer (5 seconds)
+
+        // Get references to HTML elements
+        const rockBtn = document.getElementById("rock");
+        const paperBtn = document.getElementById("paper");
+        const scissorsBtn = document.getElementById("scissors");
+        const displayResult = document.getElementById("result");
+        const pointsDisplay = document.getElementById("points");
+        const scoreTable = document.getElementById("scoreTable");
+        const startBtn = document.getElementById("start");
+        const resetBtn = document.getElementById("reset");
+        const pauseBtn = document.getElementById("pause");
+        const timeDisplay = document.getElementById('time');
+
+        // Function to update the timer
+        function updateTimer() {
+            if (timeLeft === 0) {
+                clearInterval(timerInterval);
+                endRound(); // End the round when the timer reaches 0
+            } else {
+                timeDisplay.textContent = timeLeft;
+                timeLeft--;
+            }
+        }
+
+        // Function to start the countdown timer
+        function startCountdown() {
+            timeLeft = 5; // Reset the timer to 5 seconds
+            countdownStarted = true;
+            timerInterval = setInterval(updateTimer, 1000);
+        }
+
+        // Function to pause the countdown timer
+        function pauseCountdown() {
+            clearInterval(timerInterval);
+        }
+
+        // Function to enable move buttons
+        function enableMoveButtons() {
+            rockBtn.disabled = false;
+            paperBtn.disabled = false;
+            scissorsBtn.disabled = false;
+        }
+
+        // Function to disable move buttons
+        function disableMoveButtons() {
+            rockBtn.disabled = true;
+            paperBtn.disabled = true;
+            scissorsBtn.disabled = true;
+        }
+
+        // Function to handle player's move
+        function playGame(playerChoice) {
+            if (!canPlay) {
+                return; // Prevent moves when not allowed
+            }
+
+            pauseCountdown(); // Pause the countdown timer
+            disableMoveButtons(); // Disable move buttons while processing
+
+            timeLeft = 5; // Reset the timer to 5 seconds for the next move
+
+            canPlay = false; // Disable further moves until round end
+
+            // Generate a random choice for the computer
+            const choices = ['rock', 'paper', 'scissors'];
+            const computerChoice = choices[Math.floor(Math.random() * choices.length)];
+
+            // Determine the result of the round
+            const result = getResult(playerChoice, computerChoice);
+
+            // Display the result to the player
+            displayResult.innerHTML = `You chose ${playerChoice}. The computer chose ${computerChoice}. ${result}`;
+
+            // Initialize scores for the current round
+            let playerScore = 0;
+            let computerScore = 0;
+
+            // Calculate scores based on the round result
+            if (result === 'You win!') {
+                playerScore = 10;
+                computerScore = 0;
+            } else if (result === "It's a tie!") {
+                playerScore = 5;
+                computerScore = 5;
+            } else {
+                playerScore = 0;
+                computerScore = 10;
+            }
+
+            // Update the player's total score and round score
+            points += playerScore;
+            totalScore += playerScore;
+            computerPoints += computerScore;
+
+            // Add a new row to the score table to display round details
+            const newRow = scoreTable.insertRow();
+            newRow.insertCell().textContent = round;
+            newRow.insertCell().textContent = playerChoice;
+            newRow.insertCell().textContent = computerChoice;
+            newRow.insertCell().textContent = result;
+            newRow.insertCell().textContent = playerScore;
+            newRow.insertCell().textContent = computerScore;
+
+            round++; // Increment the round number
+
+            // Check if it's the last round and end the game if so
+            if (round > 12) {
+                endGame();
+            } else {
+                startCountdown(); // Start the timer for the next round
+                enableMoveButtons(); // Enable move buttons for the next round
+            }
+        }
+
+        // Function to determine the round result
+        function getResult(playerChoice, computerChoice) {
+            if (playerChoice === computerChoice) {
+                return "It's a tie!";
+            } else if (
+                (playerChoice === 'rock' && computerChoice === 'scissors') ||
+                (playerChoice === 'paper' && computerChoice === 'rock') ||
+                (playerChoice === 'scissors' && computerChoice === 'paper')
+            ) {
+                return 'You win!';
+            } else {
+                computerPoints += 10;
+                return 'Computer wins!';
+            }
+        }
+
+        // Function to end the current round
+        function endRound() {
+            countdownStarted = false; // Countdown is paused
+
+            canPlay = true; // Allow the player to make a move
+
+            if (round <= 12) {
+                startCountdown(); // Start the timer for the next round
+                enableMoveButtons(); // Enable move buttons for the next round
+            } else {
+                endGame(); // End the game if all rounds are played
+            }
+        }
+
+        // Function to end the game
+        function endGame() {
+            displayResult.textContent = 'Game over!';
+            document.getElementById('timer').textContent = 'Game Over';
+            disableMoveButtons(); // Disable move buttons
+            startBtn.disabled = false; // Enable the Start button
+            resetBtn.disabled = false; // Enable the Reset button
+            pauseBtn.disabled = true; // Disable the Pause button
+
+            // Display the total scores and declare the winner
+            const totalScoreRow = scoreTable.insertRow();
+            totalScoreRow.insertCell().textContent = 'Total Score:';
+            totalScoreRow.insertCell().textContent = ''; // Empty cell
+            totalScoreRow.insertCell().textContent = ''; // Empty cell
+            totalScoreRow.insertCell().textContent = ''; // Empty cell
+            totalScoreRow.insertCell().textContent = totalScore; // Display total player score
+            totalScoreRow.insertCell().textContent = computerPoints; // Display total computer score
+
+            // Declare the winner based on total scores
+            if (points > computerPoints) {
+                displayResult.textContent += ' You win!';
+            } else if (points < computerPoints) {
+                displayResult.textContent += ' Computer wins!';
+            } else {
+                displayResult.textContent += " It's a tie!";
+            }
+        }
+
+        // Function to reset the game
+        function resetGame() {
+            points = 0;
+            computerPoints = 0;
+            round = 1;
+            totalScore = 0;
+            timeLeft = 5; // Reset the timer to 5 seconds
+            pointsDisplay.textContent = points;
+            displayResult.textContent = '';
+            document.getElementById('timer').textContent = '5 seconds';
+            while (scoreTable.rows.length > 1) {
+                scoreTable.deleteRow(1); // Remove previous round details from the score table
+            }
+            enableMoveButtons(); // Enable move buttons for a new game
+        }
+
+        // Event listeners for buttons
+
+        // Start button click event
+        startBtn.addEventListener("click", () => {
+            startBtn.disabled = true; // Disable the Start button
+            resetBtn.disabled = true; // Disable the Reset button
+            pauseBtn.disabled = false; // Enable the Pause button
+            resetGame(); // Reset the game state
+            enableMoveButtons(); // Enable move buttons for the first round
+            startCountdown(); // Start the initial countdown
+        });
+
+        // Pause button click event
+        pauseBtn.addEventListener("click", () => {
+            pauseCountdown(); // Pause the countdown timer
+            startBtn.disabled = false; // Enable the Start button
+            pauseBtn.disabled = true; // Disable the Pause button
+            resetBtn.disabled = false; // Enable the Reset button
+            canPlay = true; // Allow the player to make a move after pausing
+        });
+
+        // Reset button click event
+        resetBtn.addEventListener("click", () => {
+            resetGame(); // Reset the game state
+            enableMoveButtons(); // Enable move buttons for a new game
+        });
+
+        // Player move buttons click events
+        rockBtn.addEventListener("click", () => {
+            playGame("rock"); // Handle player's choice "rock"
+        });
+
+        paperBtn.addEventListener("click", () => {
+            playGame("paper"); // Handle player's choice "paper"
+        });
+
+        scissorsBtn.addEventListener("click", () => {
+            playGame("scissors"); // Handle player's choice "scissors"
+        });
+    </script>
+</body>
+</html>
