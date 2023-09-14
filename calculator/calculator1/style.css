@@ -1,0 +1,25 @@
+.calculator {
+    width: 200px;
+    margin: 0 auto;
+    padding: 10px;
+    border: 1px solid #ccc;
+}
+
+.calculator input[type="text"] {
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 5px;
+    font-size: 16px;
+}
+
+.keypad {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 5px;
+}
+
+.keypad button {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+}
