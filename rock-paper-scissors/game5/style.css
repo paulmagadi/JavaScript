@@ -1,0 +1,17 @@
+/* CSS code for styling the HTML elements */
+#result {
+    font-size: 24px;
+    margin-top: 20px;
+}
+
+table {
+    width: 50%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: center;
+}
