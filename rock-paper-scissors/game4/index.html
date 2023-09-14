@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock, Paper, Scissors Game</title>
+    <style>
+        #result {
+            font-size: 24px;
+            margin-top: 20px;
+        }
+
+        table {
+            width: 70%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>Rock, Paper, Scissors Game</h1>
+    <p>Choose your move:</p>
+    <button id="rock">Rock</button>
+    <button id="paper">Paper</button>
+    <button id="scissors">Scissors</button>
+    <div id="result"></div>
+    <div id="score">Score: <span id="points">0</span></div>
+    <div id="timer">Time Left: <span id="time">5</span> seconds</div>
+    <button id="start">Start</button>
+    <button id="reset">Reset</button>
+    <button id="pause">Pause</button>
+    <table>
+        <thead>
+            <tr>
+                <th>Round</th>
+                <th>Your Choice</th>
+                <th>Computer's Choice</th>
+                <th>Result</th>
+                <th>Round Score</th> <!-- Modified column header -->
+                <th>Computer's Score</th>
+            </tr>
+        </thead>
+        <tbody id="scoreTable">
+        </tbody>
+    </table>
+
+    <script>
+        let points = 0;
+        let computerPoints = 0;
+        let timeLeft = 5; // Initial time
+        let round = 1;
+        let totalScore = 0; // Initialize total score
+        let timerInterval;
+        let countdownStarted = false;
+
+        const rockBtn = document.getElementById("rock");
+        const paperBtn = document.getElementById("paper");
+        const scissorsBtn = document.getElementById("scissors");
+        const displayResult = document.getElementById("result");
+        const pointsDisplay = document.getElementById("points");
+        const scoreTable = document.getElementById("scoreTable");
+        const startBtn = document.getElementById("start");
+        const resetBtn = document.getElementById("reset");
+        const pauseBtn = document.getElementById("pause");
+
+        function updateTimer() {
+            if (timeLeft === 0) {
+                clearInterval(timerInterval);
+                endRound();
+            } else {
+                document.getElementById('time').textContent = timeLeft;
+                timeLeft--;
+            }
+        }
+
+        function startCountdown() {
+            timeLeft = 5; // Reset the timer to 5 seconds
+            countdownStarted = true;
+            timerInterval = setInterval(updateTimer, 1000);
+        }
+
+    function playGame(playerChoice) {
+        if (!countdownStarted) {
+            startCountdown();
+        }
+
+        const choices = ['rock', 'paper', 'scissors'];
+        const computerChoice = choices[Math.floor(Math.random() * choices.length)];
+
+        const result = getResult(playerChoice, computerChoice);
+
+        displayResult.innerHTML = `You chose ${playerChoice}. The computer chose ${computerChoice}. ${result}`;
+        
+        let playerScore = 0; // Initialize player score for the current round
+        let computerScore = 0; // Initialize computer score for the current round
+        
+        if (result === 'You win!') {
+            playerScore = 10;
+            computerScore = 0;
+        } else if (result === "It's a tie!") {
+            playerScore = 5;
+            computerScore = 5;
+        } else {
+            playerScore = 0;
+            computerScore = 10;
+        }
+
+        points += playerScore; // Update the player's total score
+        totalScore += playerScore; // Update the player's total score
+        computerPoints += computerScore; // Update the computer's total score
+
+        // Update the score table
+        const newRow = scoreTable.insertRow();
+        newRow.insertCell().textContent = round;
+        newRow.insertCell().textContent = playerChoice;
+        newRow.insertCell().textContent = computerChoice;
+        newRow.insertCell().textContent = result;
+        newRow.insertCell().textContent = playerScore; // Display player score for the current round
+        newRow.insertCell().textContent = computerScore; // Display computer score for the current round
+
+        round++;
+
+        // Check if it's the last round
+        if (round > 12) {
+            endGame();
+        }
+    }
+
+
+        function getResult(playerChoice, computerChoice) {
+            if (playerChoice === computerChoice) {
+                return "It's a tie!";
+            } else if (
+                (playerChoice === 'rock' && computerChoice === 'scissors') ||
+                (playerChoice === 'paper' && computerChoice === 'rock') ||
+                (playerChoice === 'scissors' && computerChoice === 'paper')
+            ) {
+                return 'You win!';
+            } else {
+                computerPoints += 10;
+                return 'Computer wins!';
+            }
+        }
+
+        function endRound() {
+            countdownStarted = false;
+            if (round <= 12) {
+                startCountdown();
+            } else {
+                endGame();
+            }
+        }
+
+        function endGame() {
+            displayResult.textContent = 'Game over!';
+            document.getElementById('timer').textContent = 'Game Over';
+            rockBtn.disabled = true;
+            paperBtn.disabled = true;
+            scissorsBtn.disabled = true;
+            startBtn.disabled = false;
+            resetBtn.disabled = false;
+            pauseBtn.disabled = true;
+
+            // Display the total score and declare the winner
+            const totalScoreRow = scoreTable.insertRow();
+            totalScoreRow.insertCell().textContent = 'Total Score:';
+            totalScoreRow.insertCell().textContent = ''; // Empty cell
+            totalScoreRow.insertCell().textContent = ''; // Empty cell
+            totalScoreRow.insertCell().textContent = ''; // Empty cell
+            totalScoreRow.insertCell().textContent = totalScore; // Display total score
+            totalScoreRow.insertCell().textContent = computerPoints;
+
+            // Declare the winner
+            if (points > computerPoints) {
+                displayResult.textContent += ' You win!';
+            } else if (points < computerPoints) {
+                displayResult.textContent += ' Computer wins!';
+            } else {
+                displayResult.textContent += " It's a tie!";
+            }
+        }
+
+        function resetGame() {
+            points = 0;
+            computerPoints = 0;
+            round = 1;
+            timeLeft = 5;
+            totalScore = 0; // Reset total score
+            pointsDisplay.textContent = points;
+            displayResult.textContent = '';
+            document.getElementById('timer').textContent = '5 seconds';
+            while (scoreTable.rows.length > 1) {
+                scoreTable.deleteRow(1);
+            }
+            rockBtn.disabled = false;
+            paperBtn.disabled = false;
+            scissorsBtn.disabled = false;
+            startBtn.disabled = false;
+            resetBtn.disabled = true;
+            pauseBtn.disabled = true;
+        }
+
+        startBtn.addEventListener("click", () => {
+            startBtn.disabled = true;
+            resetBtn.disabled = true;
+            pauseBtn.disabled = false;
+            rockBtn.disabled = false;
+            paperBtn.disabled = false;
+            scissorsBtn.disabled = false;
+            resetGame(); // Call resetGame to ensure a clean start
+        });
+
+        pauseBtn.addEventListener("click", () => {
+            clearInterval(timerInterval);
+            startBtn.disabled = false;
+            pauseBtn.disabled = true;
+            resetBtn.disabled = false;
+            rockBtn.disabled = true;
+            paperBtn.disabled = true;
+            scissorsBtn.disabled = true;
+        });
+
+        resetBtn.addEventListener("click", () => {
+            resetGame();
+        });
+
+        rockBtn.addEventListener("click", () => {
+            playGame("rock");
+        });
+
+        paperBtn.addEventListener("click", () => {
+            playGame("paper");
+        });
+
+        scissorsBtn.addEventListener("click", () => {
+            playGame("scissors");
+        });
+    </script>
+</body>
+</html>
