@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modal Login Form</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <button type="button" id="login-form" class="login-form-btn">Login</button>
+
+    <div id="modal" class="modal">
+        <div class="form-container modal-content animate">
+            <form action="" method="post">
+                <div class="img">
+                    <span id="close" class="close">&times;</span>
+                    <img src="avatar.png" alt="avatar" class="avatar" width="20%"> 
+                </div>
+                <div class="container">
+                    <label for="userName">Username</label>
+                    <input type="text" placeholder="Enter Username" name="userName" required>
+
+                    <label for="password">Password</label>
+                    <input type="password" placeholder="Enter Password" name="password" required>
+
+                    <button type="submit">Login</button>
+                    <label>  
+                        <input type="checkbox" checked="checked" name="remember">Remember me
+                    </label>
+                </div>
+                <div class="container">
+                    <button type="button" class="cancelbtn" id="cancelbtn">Cancel</button>
+                    <span class="password">Forgot <a href="#">password?</a></span>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
