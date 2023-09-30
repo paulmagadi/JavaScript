@@ -1,0 +1,265 @@
+* {
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 18px;
+}
+
+:root {
+    --white-color: #fff;
+    --black-color: #000;
+    --grey-color: #D7DBDD;
+    --main-color: #D5F5E5;
+    --bar-color: #40E0D0;
+}
+
+body {
+    padding: 0;
+    margin: 0;
+}
+
+.grid-container{
+    width: 95%;
+    margin: 0 auto;
+    display: grid;
+    grid-template-areas: 
+    "head head head"
+    "left main right"
+    "foot foot foot";
+    grid-template-columns: 18% 57% 24%;
+    gap: 0.5% 1.5%;
+    border: 8px solid blue;
+} 
+
+.header {
+    width: 95%;
+    margin: 0 auto;
+    grid-area: head;
+    background-color: var(--grey-color);
+    height: 5em;
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+
+}
+
+.header-container {
+    display: grid;
+    grid-template-columns: auto auto;
+}
+
+.logo-container {
+    margin: .5em;
+}
+
+.logo-container h1,
+.logo-container p {
+    margin: 0;
+    padding: 0;
+}
+
+.topnav {
+    grid-column-start: 3;
+    padding: .5em;
+    margin: .5em .5em 0 auto;
+    height: auto;
+}
+
+.topnav a {
+    text-decoration: none;
+    color: blue;
+}
+
+.topnav a:nth-child(2) {
+    padding: 0 2em;
+}
+
+.menu,
+.side-bar h1 {
+    display: none;
+}
+
+.side-bar {
+    grid-area: left;
+    background-color: var(--main-color);
+    position: fixed;
+    margin-top: 5em;
+    top: 0;
+    width: 18%;
+}
+
+.side-bar div {
+    padding: .5em .8em;
+    margin: 1em 0 0 0; 
+    background-color: var(--bar-color);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.side-bar div:first-child {
+    margin-top: 0;
+}
+
+.side-bar div a {
+    text-decoration: none;
+    font-size: 1.123rem;
+}
+
+.side-bar div:hover,
+.side-bar div:focus {
+    cursor: pointer;
+    background-color: var(--white-color);
+}
+
+.side-bar div:hover a,
+.side-bar div:focus a {
+    color: var(--black-color);
+}
+
+.main-content {
+    grid-area: main;
+    margin-top: 5em;
+}
+
+article img{
+    float: left;
+    padding: .5em;
+}
+
+.line {
+    border-bottom: 2px solid var(--grey-color);
+}
+
+.line:last-child {
+    border: none;
+}
+
+.side-right {
+    grid-area: right;
+    margin-top: 5em;
+    padding: 0 .9em;
+}
+
+.side-right .profile {
+    border-bottom: 5px solid var(--grey-color);
+    border-left: 5px solid var(--grey-color);
+    padding: 0 .5em .5em .5em;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.profile-image {
+    width: 60%;
+    margin: 0 auto;
+}
+
+.profile-image img {
+    border-radius: 50%;
+}
+
+.profile-image p {
+    text-align: center;
+    padding: 0;
+    margin: 0 vl;;
+}
+
+.side-right .aside-content {
+    border-bottom: 5px solid var(--grey-color);
+}
+
+.side-right .aside-content:last-child {
+    border: none;
+}
+
+.footer {
+    grid-area: foot;
+    background-color: var(--grey-color);
+    bottom: 0;
+    width: 85%;
+    margin: 0 auto;
+}
+
+.foot {
+    display: grid;
+    grid-template-columns: 20% 15% 15% 15% 30% ;
+    gap: 1%;
+}
+
+.foot h5 {
+    padding: 0 0 0 2em;
+}
+
+@media  (max-width:980px) {
+    .grid-container {
+        border: none;
+    }
+}
+
+@media screen and (max-width: 720px) {
+    html {
+        font-size: 13.5px;
+    }
+
+    .grid-container {
+        display: block;
+        width: 100%;
+        padding: 1em;
+    }
+
+    .menu,
+    .side-bar h1{
+        display: block;
+    }
+    .menu:hover,
+    .menu:focus,
+    .side-bar h1:hover,
+    .side-bar h1:focus {
+        cursor: pointer;
+    }
+
+    .side-bar {
+        display: none;
+    }
+
+    .profile {
+        display: none;
+    }
+
+    .side-bar div {
+        width: auto;
+    }
+
+    .header,
+    .footer,
+    .side-bar,
+    .main-content,
+    .side-right {
+        width: 100%;
+        position: static;
+        margin-top: 0;
+    }
+
+    .lead-content img {
+        width: 49%;
+    }
+}
+
+@media screen and (max-width:628px) {
+    html {
+        font-size: 12px;
+    }
+
+    .header,
+    .footer {
+        display: block;
+        text-align: center;
+        height: auto;
+        padding: .5em 0;
+    }
+
+    .footer h5:nth-child(2),
+    .footer h5:nth-child(4) {
+        display: none;
+    }
+}
+
