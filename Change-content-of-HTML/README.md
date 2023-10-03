@@ -22,7 +22,7 @@ The JavaScript file (script.js) provides the functionality to change the content
 - It sets variables references for the HTML elements.
 - Adds an event listener to the "Change Content" button.
 - When the button is clicked, it changes the content of the <p> element.
-<img src="weaver-bird.jpg" width="150" height="auto">
+<img src="weaver-bird.jpg" width="500" height="auto">
 
 ### Image Change
 
