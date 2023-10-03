@@ -30,8 +30,9 @@ The JavaScript file (script.js) provides the functionality to change the content
 - Adds event listeners to each image-related button.
 - When a button is clicked, it changes the src attribute of the image element to display a different image.
 
-#### Change content Button
-1. <p>Good morning Gentlemen. This is the original content of this page. I will use JavaScript to change it to a new content.</p>
+#### On click the buttons, the HTML contents changes to the following;
+1. Change content Button
+ <p>Good morning Gentlemen. This is the original content of this page. I will use JavaScript to change it to a new content.</p>
 Will change to:
 - <p>This is the new content. I have used JavaScript to change it from the original content to this.</p>
 
