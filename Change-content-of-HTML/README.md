@@ -31,10 +31,21 @@ The JavaScript file (script.js) provides the functionality to change the content
 - When a button is clicked, it changes the src attribute of the image element to display a different image.
 
 #### Change content Button
-'<p>Good morning Gentlemen. This is the original content of this page. I will use JavaScript to change it to a new content.</p>'
+1. <p>Good morning Gentlemen. This is the original content of this page. I will use JavaScript to change it to a new content.</p>
 Will change to:
-<p style="color:blue">This is the new content. I have used JavaScript to change it from the original content to this.</p>
+- <p>This is the new content. I have used JavaScript to change it from the original content to this.</p>
 
+2. Kingfisher Button
+<img src="webpage-kingfisher.png" width="500" height="auto">
+
+3. Chick Button
+<img src="webpage-chick.png" width="500" height="auto">
+
+4. Owl Button
+<img src="webpage-owl.png" width="500" height="auto">
+
+5. Weaver Bird Button
+<img src="webpage-weaverbird.png" width="500" height="auto">
 
 ## How to Use
 
